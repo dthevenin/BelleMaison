@@ -1,0 +1,363 @@
+var _app_loaded_ = false;
+
+function printlnConsole () {};
+function printConsole () {};
+function printlnDebug () {};
+function printDebug () {};
+
+function belle_maison_initComponent ()
+{
+  var config, default_values;
+
+  this.apply ("Application", "initComponent");
+  
+  config = new Object ();
+  config.id = "hak_id_1313502551306842585";
+  this.mainMenu = Class["new"]("ABView", config);
+  object_extend (this.mainMenu, belle_maison_main_menu_proto);
+  this.add (this.mainMenu, 'children');
+  
+  config = new Object ();
+  config.id = "hak_id_131350670572156148";
+  this.fpOneView = Class["new"]("ABView", config);
+  object_extend (this.fpOneView, belle_maison_fp_one_view_proto);
+  this.add (this.fpOneView, 'children');
+  
+  config = new Object ();
+  config.id = "hak_id_131352776901985748";
+  this.fpTwoView = Class["new"]("ABView", config);
+  object_extend (this.fpTwoView, belle_maison_fp_two_view_proto);
+  this.add (this.fpTwoView, 'children');
+  this.mainMenu.init ();
+  this.fpOneView.init ();
+  this.fpTwoView.init ();
+}
+Class.addMethod ("BelleMaison", "initComponent", belle_maison_initComponent);
+
+var belle_maison_main_menu_proto = new Object ();
+
+function belle_maison_mainMenu_initSkin ()
+{
+  this.apply ("ABView", "initSkin");
+  
+  this.fpOneButton.setNavigationDelegate (this);
+  this.fpTwoButton.setNavigationDelegate (this);
+  this.homeBaseButton.setNavigationDelegate (this);
+}
+belle_maison_main_menu_proto.initSkin = belle_maison_mainMenu_initSkin;
+
+function belle_maison_mainMenu_show ()
+{
+  this.apply ("ABView", "show");
+  __setPos (this.view, 0, 0);
+  
+  this.fpOneButton.setFocus ();
+}
+belle_maison_main_menu_proto.show = belle_maison_mainMenu_show;
+
+function belle_maison_mainMenu_hide ()
+{
+  this.apply ("ABView", "hide");
+  __setPos (this.view, 960, 0);
+}
+belle_maison_main_menu_proto.hide = belle_maison_mainMenu_hide;
+
+function belle_maison_mainMenu_onActive (obj)
+{
+  if (obj == this.fpOneButton)
+  { this.propagate ('mainMenuSelect', 1); }
+  else if (obj == this.fpTwoButton)
+  { this.propagate ('mainMenuSelect', 2); }
+  else if (obj == this.homeBaseButton)
+  { this.propagate ('mainMenuSelect', 3); }
+}
+belle_maison_main_menu_proto.onActive = belle_maison_mainMenu_onActive;
+
+function belle_maison_mainMenu_notify (event)
+{
+}
+belle_maison_main_menu_proto.notify = belle_maison_mainMenu_notify;
+
+
+function belle_maison_main_menu_initComponent ()
+{
+  var config, default_values;
+
+  this.apply ("ABView", "initComponent");
+  
+  config = new Object ();
+  config.id = "hak_id_1313502795560454402";
+  this.background = Class["new"]("ABImageView", config);
+  this.add (this.background, 'children');
+  
+  config = new Object ();
+  config.id = "hak_id_1313502702777282422";
+  this.fpOneButton = Class["new"]("ABNavImageView", config);
+  this.add (this.fpOneButton, 'children');
+  
+  config = new Object ();
+  config.id = "hak_id_1313502705799904979";
+  this.fpTwoButton = Class["new"]("ABNavImageView", config);
+  this.add (this.fpTwoButton, 'children');
+  
+  config = new Object ();
+  config.id = "hak_id_1313502708218698511";
+  this.homeBaseButton = Class["new"]("ABNavImageView", config);
+  this.add (this.homeBaseButton, 'children');
+  this.background.init ();
+  this.fpOneButton.init ();
+  this.fpTwoButton.init ();
+  this.homeBaseButton.init ();
+}
+belle_maison_main_menu_proto.initComponent = belle_maison_main_menu_initComponent;
+var belle_maison_fp_one_view_proto = new Object ();
+
+function fp_one_menu_initSkin ()
+{
+  this.apply ("ABView", "initSkin");
+
+  this.firstButton.setNavigationDelegate (this);
+  this.secondButton.setNavigationDelegate (this);
+  this.backButton.setNavigationDelegate (this);
+ }
+belle_maison_fp_one_view_proto.initSkin = fp_one_menu_initSkin;
+
+function fp_one_menu_setFocus (event)
+{
+  this.fpOneButton.setFocus ();
+}
+belle_maison_fp_one_view_proto.setFocus = fp_one_menu_setFocus;
+
+function fp_one_menu_show ()
+{
+  this.apply ("ABView", "show");
+ __setPos (this.view, 0, 0);
+  
+  this.firstButton.setFocus ();
+}
+belle_maison_fp_one_view_proto.show = fp_one_menu_show;
+
+function fp_one_menu_hide ()
+{
+  this.apply ("ABView", "hide");
+ __setPos (this.view, 960, 0);
+}
+belle_maison_fp_one_view_proto.hide = fp_one_menu_hide;
+
+function fp_one_menu_onActive (obj)
+{
+ // if (obj == this.fpOneButton)
+  if (obj == this.backButton)
+  {
+    this.propagate ('menu');
+  }
+}
+belle_maison_fp_one_view_proto.onActive = fp_one_menu_onActive;
+
+function fp_one_menu_notify (event)
+{
+}
+belle_maison_fp_one_view_proto.notify = fp_one_menu_notify;
+
+
+function belle_maison_fp_one_view_initComponent ()
+{
+  var config, default_values;
+
+  this.apply ("ABView", "initComponent");
+  
+  config = new Object ();
+  config.id = "hak_id_1315947672976347679";
+  this.background = Class["new"]("ABImageView", config);
+  this.add (this.background, 'children');
+  
+  config = new Object ();
+  config.id = "hak_id_1313506705743949703";
+  this.secondButton = Class["new"]("ABNavImageView", config);
+  this.add (this.secondButton, 'children');
+  
+  config = new Object ();
+  config.id = "hak_id_1313506705743309922";
+  this.firstButton = Class["new"]("ABNavImageView", config);
+  this.add (this.firstButton, 'children');
+  
+  config = new Object ();
+  config.id = "hak_id_1313527147035788891";
+  this.backButton = Class["new"]("ABNavImageView", config);
+  this.add (this.backButton, 'children');
+  this.background.init ();
+  this.secondButton.init ();
+  this.firstButton.init ();
+  this.backButton.init ();
+}
+belle_maison_fp_one_view_proto.initComponent = belle_maison_fp_one_view_initComponent;
+var belle_maison_fp_two_view_proto = new Object ();
+
+/**********************************************
+ * 
+ **********************************************/
+function fp_two_view_initSkin ()
+{
+  this.apply ("ABView", "initSkin");
+
+  this.firstButton.setNavigationDelegate (this);
+  this.secondButton.setNavigationDelegate (this);
+  this.thirdButton.setNavigationDelegate (this);
+  
+//  this.mainView.bind ('menuActive', this);
+}
+belle_maison_fp_two_view_proto.initSkin = fp_two_view_initSkin;
+
+
+/**********************************************
+ * 
+ **********************************************/
+function fp_two_view_show ()
+{
+  __setPos (this.view, 0, 0);
+
+  this.apply ("ABView", "show");
+  
+  this.firstButton.setFocus ();
+}
+belle_maison_fp_two_view_proto.show = fp_two_view_show;
+
+function fp_two_view_hide ()
+{
+  this.apply ("ABView", "hide");
+  __setPos (this.view, 960, 0);
+}
+belle_maison_fp_two_view_proto.hide = fp_two_view_hide;
+
+/**********************************************
+ * 
+ **********************************************/
+function fp_two_view_onActive (obj)
+{
+  if (obj == this.secondButton)
+  {
+    this.propagate ('mainMenuSelect', 1);
+  }
+  if (obj == this.thirdButton)
+  {
+    this.propagate ('mainMenuSelect', 3);
+  }
+}
+belle_maison_fp_two_view_proto.onActive = fp_two_view_onActive;
+
+
+/**********************************************
+ * 
+ **********************************************/
+function fp_two_view_onDown(obj)
+{
+  this.mainView.firstButton.setFocus ();
+}
+belle_maison_fp_two_view_proto.onDown = fp_two_view_onDown;
+
+
+/**********************************************
+ * 
+ **********************************************/
+function fp_two_view_notify (event)
+{
+  if (event.type == 'menuActive')
+  {
+    this.firstButton.setFocus ();
+  }
+}
+belle_maison_fp_two_view_proto.notify = fp_two_view_notify;
+
+
+function belle_maison_fp_two_view_initComponent ()
+{
+  var config, default_values;
+
+  this.apply ("ABView", "initComponent");
+  
+  config = new Object ();
+  config.id = "hak_id_1313527811702824695";
+  this.background = Class["new"]("ABImageView", config);
+  this.add (this.background, 'children');
+  
+  config = new Object ();
+  config.id = "hak_id_1313527820866350753";
+  this.firstButton = Class["new"]("ABNavImageView", config);
+  this.add (this.firstButton, 'children');
+  
+  config = new Object ();
+  config.id = "hak_id_1313528044894474540";
+  this.secondButton = Class["new"]("ABNavImageView", config);
+  this.add (this.secondButton, 'children');
+  
+  config = new Object ();
+  config.id = "hak_id_1313528090074139094";
+  this.thirdButton = Class["new"]("ABNavImageView", config);
+  this.add (this.thirdButton, 'children');
+  
+  config = new Object ();
+  config.id = "hak_id_1315986928818891135";
+  this.imageView1 = Class["new"]("ABNavImageView", config);
+  this.add (this.imageView1, 'children');
+  
+  config = new Object ();
+  config.id = "hak_id_1315986967924545646";
+  this.imageView2 = Class["new"]("ABNavImageView", config);
+  this.add (this.imageView2, 'children');
+  this.background.init ();
+  this.firstButton.init ();
+  this.secondButton.init ();
+  this.thirdButton.init ();
+  this.imageView1.init ();
+  this.imageView2.init ();
+}
+belle_maison_fp_two_view_proto.initComponent = belle_maison_fp_two_view_initComponent;
+
+function initApplication ()
+{
+  var obj = undefined;
+  var default_values = new Object ();
+
+  
+  config = new Object ();
+  config.id = "hak_id_1313502233708847091";
+  this._belle_maison = Class["new"]("BelleMaison", config);
+  this._belle_maison.init ();
+  Page.sendStart ();
+  this._belle_maison.setNavigationGraph (_belle_maison_nav_graph);
+}
+
+
+var _belle_maison_nav_graph = new Object ();
+_belle_maison_nav_graph.hak_id_1313502702777282422 = new Object ();
+_belle_maison_nav_graph.hak_id_1313502702777282422[4] = 'hak_id_1313502705799904979';
+_belle_maison_nav_graph.hak_id_1313502705799904979 = new Object ();
+_belle_maison_nav_graph.hak_id_1313502705799904979[4] = 'hak_id_1313502708218698511';
+_belle_maison_nav_graph.hak_id_1313502705799904979[3] = 'hak_id_1313502702777282422';
+_belle_maison_nav_graph.hak_id_1313502708218698511 = new Object ();
+_belle_maison_nav_graph.hak_id_1313502708218698511[4] = 'hak_id_1313502702777282422';
+_belle_maison_nav_graph.hak_id_1313502708218698511[3] = 'hak_id_1313502705799904979';
+_belle_maison_nav_graph.hak_id_1313506705743949703 = new Object ();
+_belle_maison_nav_graph.hak_id_1313506705743949703[3] = 'hak_id_1313506705743309922';
+_belle_maison_nav_graph.hak_id_1313506705743949703[4] = 'hak_id_1313527147035788891';
+_belle_maison_nav_graph.hak_id_1313506705743309922 = new Object ();
+_belle_maison_nav_graph.hak_id_1313506705743309922[4] = 'hak_id_1313506705743949703';
+_belle_maison_nav_graph.hak_id_1313506705743309922[3] = 'hak_id_1313527147035788891';
+_belle_maison_nav_graph.hak_id_1313527147035788891 = new Object ();
+_belle_maison_nav_graph.hak_id_1313527147035788891[4] = 'hak_id_1313506705743309922';
+_belle_maison_nav_graph.hak_id_1313527147035788891[3] = 'hak_id_1313506705743949703';
+_belle_maison_nav_graph.hak_id_1313527820866350753 = new Object ();
+_belle_maison_nav_graph.hak_id_1313527820866350753[3] = 'hak_id_1313528044894474540';
+_belle_maison_nav_graph.hak_id_1313527820866350753[4] = 'hak_id_1313528090074139094';
+_belle_maison_nav_graph.hak_id_1313527820866350753[2] = 'hak_id_1315986928818891135';
+_belle_maison_nav_graph.hak_id_1313528044894474540 = new Object ();
+_belle_maison_nav_graph.hak_id_1313528044894474540[4] = 'hak_id_1313527820866350753';
+_belle_maison_nav_graph.hak_id_1313528090074139094 = new Object ();
+_belle_maison_nav_graph.hak_id_1313528090074139094[3] = 'hak_id_1313527820866350753';
+_belle_maison_nav_graph.hak_id_1315986928818891135 = new Object ();
+_belle_maison_nav_graph.hak_id_1315986928818891135[1] = 'hak_id_1313527820866350753';
+_belle_maison_nav_graph.hak_id_1315986928818891135[4] = 'hak_id_1315986967924545646';
+_belle_maison_nav_graph.hak_id_1315986967924545646 = new Object ();
+_belle_maison_nav_graph.hak_id_1315986967924545646[1] = 'hak_id_1313527820866350753';
+_belle_maison_nav_graph.hak_id_1315986967924545646[3] = 'hak_id_1315986928818891135';
+
