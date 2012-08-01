@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <widget xmlns="http://itu.int/challenge/iptv"
-  id="com.vsd.bellemaison"
+  id="com.vsd"
   width="960" height="540"
   viewmodes="fullscreen"
-  version="0.0.11">
+  version="0.0.54">
   <name>BelleMaison</name>
   <description xml:lang="en"></description>
-  <author>David Thevenin</author>
-  <author></author>
+  <author>vinisketch</author>
+  <author>vinisketch</author>
   <license></license>
   <language>FR</language>
   <icon src="" />

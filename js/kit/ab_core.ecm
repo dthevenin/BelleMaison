@@ -1,1 +1,1467 @@
-var _toString=Object.prototype.toString;Object.NULL_TYPE="Null";Object.UNDEFINED_TYPE="Undefined";Object.BOOLEAN_TYPE="Boolean";Object.NUMBER_TYPE="Number";Object.STRING_TYPE="String";Object.OBJECT_TYPE="Object";Object.BOOLEAN_CLASS="[object Boolean]";Object.NUMBER_CLASS="[object Number]";Object.STRING_CLASS="[object String]";Object.ARRAY_CLASS="[object Array]";Object.OBJECT_CLASS="[object Object]";function _isElement(a){return !!(a&&a.nodeType==1);}Object.isElement=_isElement;Array.prototype.__toString__=_toString;function _isArray(a){if(!a){return false;}if(!a.__toString__){a.__toString__=_toString;}return a.__toString__()==Object.ARRAY_CLASS;}Object.isArray=_isArray;function _isFunction(a){return typeof a=="function";}Object.isFunction=_isFunction;String.prototype.__toString__=_toString;function _isString(a){var b=typeof a;if(b=="undefined"){return false;}if(b=="null"){return false;}if(b=="object"){return false;}if(!a.__toString__){a.__toString__=_toString;}return a.__toString__()==Object.STRING_CLASS;}Object.isString=_isString;Number.prototype.__toString__=_toString;function _isNumber(a){var b=typeof a;if(b=="undefined"){return false;}if(b=="null"){return false;}if(b=="object"){return false;}if(!a.__toString__){a.__toString__=_toString;}return a.__toString__()==Object.NUMBER_CLASS;}Object.isNumber=_isNumber;function _isUndefined(a){return typeof a=="undefined";}Object.isUndefined=_isUndefined;function _camelize(){var d=this.split("-"),a=d.length;if(a==1){return d[0];}var c=this.charAt(0)=="-"?d[0].charAt(0).toUpperCase()+d[0].substring(1):d[0];for(var b=1;b<a;b++){c+=d[b].charAt(0).toUpperCase()+d[b].substring(1);}return c;}String.prototype.camelize=_camelize;function _underscore(){var c="",a=this.length,d;for(var b=0;b<a;b++){d=this.charCodeAt(b);if(d>64&&d<91){c+="_"+this.charAt(b).toLowerCase();}else{c+=this.charAt(b);}}return c;}String.prototype.underscore=_underscore;function _capitalize(){return this.charAt(0).toUpperCase()+this.substring(1).toLowerCase();}String.prototype.capitalize=_capitalize;function __slice(f,g,c){var b=f.length,a=new Array(b);if(!c||c>b){c=b;}if(!g||g<0||g>b){g=0;}var d=0;for(var e=g;e<c;e++){a[d++]=f[e];}return a;}function _slice(b,a){return __slice(this,b,a);}if(!Array.prototype.slice){Array.prototype.slice=_slice;}function __remove(e,d){var c=this.slice((d||e)+1||this.length);var a=e<0?this.length+e:e;this.length=a;for(var b=0;b<c.length;b++){this[a++]=c[b];}return this;}Array.prototype._remove=__remove;function _indexOf(b,c){var a=this.length;var c=c?c:0;c=(c<0)?0:c;while(c<a){if(this[c]==b){return c;}c++;}return -1;}Array.prototype.indexOf=_indexOf;function _remove(c,b){if((typeof(c)=="object")||(typeof(c)=="string")){var a=0;while(a<this.length){if(this[a]==c){this._remove(a);}else{a++;}}}else{this._remove(c,b);}return this;}Array.prototype.remove=_remove;function _removeAll(){while(this.length>0){this._remove(0);}return this;}Array.prototype.removeAll=_removeAll;function _delete(a){if(!a){return;}if(a._free){a._free();}if(a.destructor){a.destructor();}delete (a);a=null;return a;}var free=_delete;function _toAbsolute(c){if(!c){return null;}var b=0;var g=0;var e=c;while(e){var d=0;var f=0;if(e!=c){d=parseInt(e.currentStyle?e.currentStyle.borderLeftWidth:0,0);f=parseInt(e.currentStyle?e.currentStyle.borderTopWidth:0,0);d=isNaN(d)?0:d;f=isNaN(f)?0:f;}b+=e.offsetLeft-e.scrollLeft+d;g+=e.offsetTop-e.scrollTop+f;e=e.offsetParent;}var a=new Object();a.x=b;a.y=g;return a;}function object_extend(b,a){for(var c in a){b[c]=a[c];}return(b);}function object_extend_with_proto(d,b){if(!d||!b){return;}var c=__proto_list[b];if(!c){printlnConsole("Class.new: Unknown proto '"+b+"'");return;}for(var e in c){if(d[e]){continue;}d[e]=c[e];}var a=__proto_hierarchy[b];if(a){object_extend_with_proto(d,a);}return(d);}var __proto_list=new Object();var __proto_hierarchy=new Object();function class_extend(f,a){if(!f||!a){printlnConsole("Class.extend: Invalid class name parameters");return;}var d=f.underscore();var b=a.underscore();var c=__proto_list[d];var e=__proto_list[b];var h,g;if(!c){printlnConsole("Class.extend: Unknown class '"+f+"'");return;}if(!e){printlnConsole("Class.extend: Unknown class '"+a+"'");return;}__proto_hierarchy[d]=b;c.__proto__=e;}function __apply__(b,c,a){if(!b){printlnConsole(" __apply__ Object null");return;}if(!c||!Object.isFunction(b[c])){printlnConsole(" __apply__ unknown method '"+c+"'");return;}if(!a||a.length==0){return b[c]();}else{if(a.length==1){return b[c](a[0]);}else{if(a.length==2){return b[c](a[0],a[1]);}else{if(a.length==3){return b[c](a[0],a[1],a[2]);}else{if(a.length==4){return b[c](a[0],a[1],a[2],a[3]);}else{if(a.length==5){return b[c](a[0],a[1],a[2],a[3],a[4]);}else{if(a.length==6){return b[c](a[0],a[1],a[2],a[3],a[4],a[5]);}else{if(a.length==7){return b[c](a[0],a[1],a[2],a[3],a[4],a[5],a[6]);}else{printlnConsole(" __apply__ Too much parameters...");}}}}}}}}}function class_apply(){var b=arguments;var e=b[0];var f=b[1];if(!e||!Object.isString(e)||!f||!Object.isString(f)){printlnConsole("Class.apply : bad parameters.");return;}if(b.length>2){b=__slice(b,2);}else{b=null;}var c=e.underscore();var d=__proto_list[c];if(!d){printlnConsole("Class.apply : unknown prototype for class '"+e+"'");return;}while(d){if(Object.isFunction(d[f])){this.__function_to_call__=d[f];var a=__apply__(this,"__function_to_call__",b);delete this.__function_to_call__;return a;}d=d.__proto__;}printlnConsole("Class.super : unknown function '"+f+"'");}function class_new(){var a=arguments;var d=a[0];var b=d.underscore();var c=__proto_list[b];if(!c){printlnConsole("Impossible to instanciate with unknown prototype '"+b+"'");return;}var e=new Object();object_extend_with_proto(e,b);e.apply=class_apply;e.__proto__=c;if(e._constructor){if(a.length==1){e._constructor();}else{if(a.length==2){e._constructor(a[1]);}else{if(a.length==3){e._constructor(a[1],a[2]);}else{if(a.length==4){e._constructor(a[1],a[2],a[3]);}else{if(a.length==5){e._constructor(a[1],a[2],a[3],a[4]);}else{if(a.length==6){e._constructor(a[1],a[2],a[3],a[4],a[5]);}else{if(a.length==7){e._constructor(a[1],a[2],a[3],a[4],a[5],a[6]);}}}}}}}}return e;}function class_create(c,b){var a=c.underscore();__proto_list[a]=b;b.__name__=a;return new Object();}function class_add_method(e,b,d){var a=e.underscore();var c=__proto_list[a];if(!c){printlnConsole("Impossible to add method to unknown class '"+e+"'");return;}c[b]=d;}var Class=new Object();Class.extend=class_extend;Class.create=class_create;Class.addMethod=class_add_method;Class["new"]=class_new;function ABEvent(c,a,b){this.src=c;this.type=a;this.data=b;}var abobject_proto=new Object();function abobject_constructor(a){if(!Object.isString(a)){if(a&&a.id){this.id=a.id;}else{this.id=ABObject.createId();}}else{this.id=a;}ABObject._obs[this.id]=this;this.__i__=false;}abobject_proto._constructor=abobject_constructor;function _createId(){return"id_"+new Date().getTime()+""+Math.floor(Math.random()*1000);}abobject_proto.id="";abobject_proto.__i__=false;function abobject_init(){if(this.__i__){return;}this.initComponent();this.__i__=true;}abobject_proto.init=abobject_init;function abobject_initComponent(){}abobject_proto.initComponent=abobject_initComponent;function abobject_configure(a){if(typeof(a)!="object"){return;}for(var b in a){if(b=="id"||b=="node"||b=="view"){continue;}if(!b.capitalize){continue;}var c="set"+b.capitalize();if(!this[c]){continue;}this[c](a[b]);}}abobject_proto.configure=abobject_configure;function abobject_destructor(){}abobject_proto.destructor=abobject_destructor;var ABObject=Class.create("ABObject",abobject_proto);ABObject._obs=new Object();ABObject.createId=_createId;function ABHandler(a,c,b){this.spec=a;this.obj=c;this.func=b;}var abeventsource_proto=new Object();function abeventsource_constructor(a){if(!Object.isString(a)){if(a&&a.id){a=a.id;}else{a=ABObject.createId();}}this.apply("ABObject","_constructor",a);this.__bindings__=new Object();this.__node_binds__=new Object();}abeventsource_proto._constructor=abeventsource_constructor;abeventsource_proto.__bindings__=null;abeventsource_proto.__node_binds__=null;function abeventsource_destructor(){var a,e,b,d,c;for(a in this.__bindings__){e=this.__bindings__[a];if(!e){continue;}while(e.length){d=e.pop();delete (d);}delete (this.__bindings__[a]);}delete (this.__bindings__);for(a in this.__node_binds__){c=this.__node_binds__[a];if(typeof(c)=="undefined"){printlnConsole("ABObject.destructor, no bind <"+a+" exists.");continue;}for(b=0;b<c.length;b++){data=c[b];data.n.removeEventListener(event,data.h);}}delete (this.__node_binds__);this.apply("ABObject","destructor");}abeventsource_proto.destructor=abeventsource_destructor;function abeventsource_bind(a,e,c){if(!a||!e){return;}var b=new ABHandler(a,e,c),d=this.__bindings__[a];if(!d){d=new Array();this.__bindings__[a]=d;}d[d.length]=b;return b;}function abeventsource_unbind(a,e,c){var d=this.__bindings__[a],b=0,f;if(!d){return;}while(b<d.length){f=d[b];if(f.spec==a){if(f.obj==e){if(Object.isString(c)||Object.isFunction(c)){if(f.func==c){d.remove(b);delete (f);}else{b++;}}else{d.remove(b);delete (f);}}else{b++;}}else{b++;}}}abeventsource_proto.bind=abeventsource_bind;abeventsource_proto.unbind=abeventsource_unbind;function abeventsource_propagate(c,g,h){var f=this.__bindings__[c],e,a,b,d;if(!f){if(this.__parent){if(!h){h=this;}this.__parent.propagate(c,g,h);}return;}e=new ABEvent(this,c,g);if(h){e.srcTarget=h;}a=f.length;while(a--){b=f[a];if(b.func){if(!b.obj[b.func]){printlnDebug("Unknown method '"+b.func+"' in class propotype '"+b.obj.__name__+"'");return;}b.obj[b.func](e);}else{b.obj.notify(e);}}}abeventsource_proto.propagate=abeventsource_propagate;function abeventsource_propagateChanges(j,c,f){var h="data_changed",e=this.__bindings__[h],a,g,k,d;if(!e){return;}var b=new Object();b.info=c;b.data=f;a=new ABEvent(this,h,b);g=e.length;while(g--){k=e[g];if(k.obj==j){continue;}if(k.func){if(!k.obj[k.func]){printlnDebug("Unknown method '"+k.func+"' in class propotype '"+k.obj.__name__+"'");return;}k.obj[k.func](a);}else{k.obj.notify(a);}}delete (a);}abeventsource_proto.propagateChanges=abeventsource_propagateChanges;function abeventsource_notify(a){this.propagate(a.type,a.data);}abeventsource_proto.notify=abeventsource_notify;var ABEventSource=Class.create("ABEventSource",abeventsource_proto);Class.extend("ABEventSource","ABObject");var KEYBOARD=Class["new"]("ABEventSource","__KEYBOARD__");function __keyup_handler(a){if(!a){a=document.currentEvent;}KEYBOARD.propagate(a.keyCode+KEYBOARD.KEY_UP,a);}function __keydown_handler(a){if(!a){a=document.currentEvent;}KEYBOARD.propagate(a.keyCode,a);}function __init_keyboard_handler(){var a=document.getElementById("keyboard_event");if(a){a.focus();}}function KEYBOARD_bind(f,e,d,a){var c=this.abeventsource_bind(f,e,d),b=this;}KEYBOARD.abeventsource_bind=KEYBOARD.bind;KEYBOARD.bind=KEYBOARD_bind;KEYBOARD.KEY_UP=1000;KEYBOARD.ENTER=18;KEYBOARD.DBUTTON=20;KEYBOARD.RED=22;KEYBOARD.BLUE=21;KEYBOARD.GREEN=23;KEYBOARD.YELLOW=24;KEYBOARD.BACK=19;KEYBOARD.UP_ARROW=1;KEYBOARD.DOWN_ARROW=2;KEYBOARD.LEFT_ARROW=3;KEYBOARD.RIGHT_ARROW=4;KEYBOARD.ZERO=5;KEYBOARD.ONE=6;KEYBOARD.TWO=7;KEYBOARD.THREE=8;KEYBOARD.FOUR=9;KEYBOARD.FIVE=10;KEYBOARD.SIX=11;KEYBOARD.SEVEN=12;KEYBOARD.EIGHT=13;KEYBOARD.NINE=14;KEYBOARD.TEN=15;KEYBOARD.ELEVEN=16;KEYBOARD.TWELVE=14;
+/**
+ Copyright (C) 2009-2011. ViniSketch SARL - David Thevenin
+
+ Permission is hereby granted, free of charge, to any person
+ obtaining a copy of this software and associated documentation
+ files (the "Software"), to deal in the Software without
+ restriction, including without limitation the rights to use,
+ copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the
+ Software is furnished to do so, subject to the following
+ conditions:
+
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+ OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ OTHER DEALINGS IN THE SOFTWARE.
+*/
+
+/**
+ *  @private
+ */
+var _toString = Object.prototype.toString;
+/** @const */ Object.NULL_TYPE = 'Null';
+/** @const */ Object.UNDEFINED_TYPE = 'Undefined';
+/** @const */ Object.BOOLEAN_TYPE = 'Boolean';
+/** @const */ Object.NUMBER_TYPE = 'Number';
+/** @const */ Object.STRING_TYPE = 'String';
+/** @const */ Object.OBJECT_TYPE = 'Object';
+/** @const */ Object.BOOLEAN_CLASS = '[object Boolean]';
+/** @const */ Object.NUMBER_CLASS = '[object Number]';
+/** @const */ Object.STRING_CLASS = '[object String]';
+/** @const */ Object.ARRAY_CLASS = '[object Array]';
+/** @const */ Object.OBJECT_CLASS = '[object Object]';
+
+/**
+ *  @private
+ */
+function _isElement (object)
+{
+  return !!(object && object.nodeType == 1);
+};
+
+/**
+ * Returns true if obj is a BML Element, false otherwise.
+ *
+ * @name isElement
+ * @function
+ * @memberOf Object.prototype
+ *
+ * @return {Boolean}
+ */
+Object.isElement = _isElement;
+
+Array.prototype.__toString__ = _toString;
+function _isArray (object)
+{
+  if (!object) { return false; }
+  if (!object.__toString__)
+  { 
+    object.__toString__ = _toString;
+  }
+  return object.__toString__ ()  == Object.ARRAY_CLASS;
+};
+
+/**
+ * Returns true if obj is an array, false otherwise.
+ *
+ * @name isArray
+ * @function
+ * @memberOf Object.prototype
+ *
+ * @return {Boolean}
+ */
+Object.isArray = _isArray;
+
+function _isFunction (object)
+{
+  return typeof object == "function";
+};
+
+/**
+ * Returns true if obj is a function, false otherwise.
+ *
+ * @name isFunction
+ * @function
+ * @memberOf Object.prototype
+ *
+ * @return {Boolean}
+ */
+Object.isFunction = _isFunction;
+
+String.prototype.__toString__ = _toString;
+function _isString (object)
+{
+  var type = typeof object;
+  if (type == "undefined") { return false; }
+  if (type == "null") { return false; }
+  if (type == "object") { return false; }
+  if (!object.__toString__)
+  { 
+    object.__toString__ = _toString;
+  }
+  return object.__toString__ () == Object.STRING_CLASS;
+};
+
+/**
+ * Returns true if obj is a String, false otherwise.
+ *
+ * @name isString
+ * @function
+ * @memberOf Object.prototype
+ *
+ * @return {Boolean}
+ */
+Object.isString = _isString;
+
+Number.prototype.__toString__ = _toString;
+function _isNumber (object)
+{
+  var type = typeof object;
+  if (type == "undefined") { return false; }
+  if (type == "null") { return false; }
+  if (type == "object") { return false; }
+  if (!object.__toString__)
+  { 
+    object.__toString__ = _toString;
+  }
+  return object.__toString__ () == Object.NUMBER_CLASS;
+};
+
+/**
+ * Returns true if obj is a Number, false otherwise.
+ *
+ * @name isNumber
+ * @function
+ * @memberOf Object.prototype
+ *
+ * @return {Boolean}
+ */
+Object.isNumber = _isNumber;
+
+function _isUndefined (object)
+{
+  return typeof object == "undefined";
+};
+
+/**
+ * Returns true if obj is undefined, false otherwise.
+ *
+ * @name isUndefined
+ * @function
+ * @memberOf Object.prototype
+ *
+ * @return {Boolean}
+ */
+Object.isUndefined = _isUndefined;
+
+function _camelize ()
+{
+  var parts = this.split('-'), len = parts.length;
+  if (len == 1) { return parts[0]; }
+
+  var camelized = this.charAt(0) == '-'
+    ? parts[0].charAt(0).toUpperCase() + parts[0].substring(1)
+    : parts[0];
+
+  for (var i = 1; i < len; i++)
+    camelized += parts[i].charAt(0).toUpperCase() + parts[i].substring(1);
+
+  return camelized;
+}
+/**
+ * Converts a string separated by dashes into a camelCase equivalent.
+ * For instance, 'foo-bar' would be converted to 'fooBar'.
+ *
+ * @name camelize
+ * @function
+ * @memberOf String.prototype
+ *
+ *  @example
+ *  background-color'.camelize();
+ *  // -> 'backgroundColor'
+ *  
+ *  '-moz-binding'.camelize();
+ *  // -> 'MozBinding'
+ * @return {String}
+ */
+String.prototype.camelize = _camelize;
+
+function _underscore ()
+{
+  var underscored = "", len = this.length, code;
+  
+  for (var i = 0; i < len; i++)
+  {
+    code = this.charCodeAt (i);
+    if (code > 64 && code < 91)
+    {
+      underscored += '_' + this.charAt (i).toLowerCase();
+    }
+    else
+    {
+      underscored += this.charAt (i);
+    }
+  }
+  return underscored;
+}
+
+/**
+ * Converts a camelized string into a series of words separated by an
+ * underscore ("_").
+ *
+ * @name underscore
+ * @function
+ * @memberOf String.prototype
+ *
+ *  @example
+ *  'borderBottomWidth'.underscore();
+ *  // -> 'border_bottom_width'
+ * @return {String}
+ */
+String.prototype.underscore = _underscore;
+
+function _capitalize ()
+{
+  return this.charAt(0).toUpperCase() + this.substring(1).toLowerCase();
+}
+
+/**
+ * Capitalizes the first letter of a string and downcases all the others.
+ *
+ * @name capitalize
+ * @function
+ * @memberOf String.prototype
+ *
+ *  @example
+ * 'hello'.capitalize();
+ * // -> 'Hello'
+ * 
+ * 'HELLO WORLD!'.capitalize();
+ * // -> 'Hello world!'
+ *
+ * @return {String}
+ */
+String.prototype.capitalize = _capitalize;
+
+function __slice (obj, start, end)
+{
+  var l = obj.length, result = new Array (l);
+  
+  if (!end|| end > l) { end = l; }
+  if (!start || start < 0 || start > l) { start = 0; }
+  
+  var j = 0;
+  for (var i = start; i < end; i++)
+  {
+    result [j++] = obj [i];
+  }
+  return result;
+};
+
+function _slice (start, end)
+{
+  return __slice (this, start, end);
+};
+
+/**
+ * Selects a part of an array, and returns the new array.
+ *
+ * @name slice
+ * @function
+ * @memberOf Array.prototype
+ *
+ *  @param {int} start An integer that specifies where to start the selection 
+ *  (The first element has an index of 0). You can also use negative numbers to 
+ *  select from the end of an array
+ *  @param {int} end An integer that specifies where to end the selection. If 
+ *  omitted, slice() selects all elements from the start position and to the end 
+ *  of the array
+ *  @returns the new array 
+ */
+if (!Array.prototype.slice) { Array.prototype.slice = _slice; }
+
+
+/**
+ * Removes the elements in the specified interval of this Array.<br/> 
+ * Shifts any subsequent elements to the left (subtracts one from their 
+ * indices).<br/>
+ * This method extends the JavaScript Array prototype.
+ * By John Resig (MIT Licensed)
+ *
+ *  @private
+ *
+ * @param {int} from Index of the first element to be removed
+ * @param {int} to Index of the last element to be removed
+ */
+function __remove (from, to)
+{
+  var rest = this.slice ((to || from) + 1 || this.length);
+  var len = from < 0 ? this.length + from : from;
+  this.length = len;
+  
+  for (var i = 0; i < rest.length; i++)
+  {
+    this [len ++] = rest [i];
+  }
+  
+  return this;
+};
+Array.prototype._remove = __remove;
+
+function _indexOf (obj, from)
+{
+  var len = this.length;
+
+  var from = from?from:0;
+  from = (from < 0)? 0: from;
+
+  while (from < len)
+  {
+    if (this [from] == obj) { return from; }
+    from++;
+  }
+  return -1;
+};
+
+/**
+ *  Find an element into this Array.
+ *
+* @name indexOf
+ *  @function
+ *  @memberOf Array.prototype
+ *
+ *
+ * @param {Object} obj Element to locate in the array
+ * @param {number} fromIndex The index at which to begin the search. 
+ *    Defaults to 0, i.e. the whole array will be searched.
+ *    If the index is greater than or equal to the length of the 
+ *    array, -1 is returned
+ * @return {int} the Index of the element. Return -1 if unfound.
+ */
+Array.prototype.indexOf = _indexOf;
+
+/**
+ * Removes the elements in the specified interval of this Array.<br/> 
+ * Shifts any subsequent elements to the left (subtracts one from their indices).<br/>
+ * This method extends the JavaScript Array prototype.
+ *
+ *  @private
+ *
+ * @param {int} from Index of the first element to be removed
+ * @param {int} to Index of the last element to be removed
+ * @return {Array} the modified array
+ */
+function _remove (from, to)
+{
+  if ((typeof(from) == "object") ||
+      (typeof(from) == "string"))
+  {
+    var i = 0;
+    while (i < this.length)
+    {
+      if (this[i] == from) { this._remove (i); }
+      else { i++; }
+    }
+  }
+  else { this._remove (from, to); }
+  return this;
+};
+Array.prototype.remove = _remove;
+
+/**
+ * Removes all elements of this Array.<br/> 
+ *
+ *  @private
+ *
+ * @return {Array} the modified array
+ */
+function _removeAll ()
+{
+  while (this.length > 0) { this._remove (0); }
+  return this;
+};
+Array.prototype.removeAll = _removeAll;
+
+function _delete (obj)
+{
+  if (!obj) { return; }
+  if (obj._free) { obj._free (); }
+  if (obj.destructor) { obj.destructor (); }
+  delete (obj);
+  obj = null;
+  return obj;
+}
+var free = _delete;
+
+/**
+*  Compute the elements position in terms of the window viewport
+**/
+function _toAbsolute (element)
+{
+  if (!element)
+  { return null; }
+
+	var x = 0;
+  var y = 0;
+  var parent = element;
+  while (parent)
+  {
+     var borderXOffset = 0;
+     var borderYOffset = 0;
+     if (parent != element)
+     {
+        borderXOffset = parseInt (
+          parent.currentStyle?
+          parent.currentStyle ["borderLeftWidth"]:0, 0);
+        borderYOffset = parseInt (
+          parent.currentStyle?
+          parent.currentStyle ["borderTopWidth"]:0, 0);
+        borderXOffset = isNaN (borderXOffset) ? 0 : borderXOffset;
+        borderYOffset = isNaN (borderYOffset) ? 0 : borderYOffset;
+     }
+
+     x += parent.offsetLeft - parent.scrollLeft + borderXOffset;
+     y += parent.offsetTop - parent.scrollTop + borderYOffset;
+     parent = parent.offsetParent;
+  }
+  var result = new Object ();
+  result.x = x; result.y = y;
+  return result;
+}
+
+/************************************************************
+   Class Mechanism
+************************************************************/
+
+/**
+ * @private
+ */
+function object_extend (obj, proto)
+{
+  for (var prop in proto)
+  {
+    obj [prop] = proto [prop];
+  }
+  return (obj);
+}
+
+/**
+ * @private
+ */
+function object_extend_with_proto (obj, proto_name)
+{
+  if (!obj || !proto_name) { return; }
+  var proto = __proto_list [proto_name];
+  if (!proto)
+  {
+    printlnConsole ("Class.new: Unknown proto '" + proto_name + "'");
+    return;
+  }
+  
+  for (var prop in proto)
+  {
+    if (obj [prop]) { continue; }
+    
+    obj [prop] = proto [prop];
+  }
+  
+  var sub_proto_name = __proto_hierarchy  [proto_name];
+  if (sub_proto_name)
+  {
+    object_extend_with_proto (obj, sub_proto_name);
+  }
+
+  return (obj);
+}
+
+/**
+ * @private
+ */
+var __proto_list = new Object ();
+/**
+ * @private
+ */
+var __proto_hierarchy = new Object ();
+
+/**
+ * @private
+ */
+function class_extend (class_dest_name, class_src_name)
+{
+  if (!class_dest_name || !class_src_name)
+  {
+    printlnConsole ("Class.extend: Invalid class name parameters");
+    return;
+  }
+  var u_class_dest_name = class_dest_name.underscore ();
+  var u_class_src_name = class_src_name.underscore ();
+  var proto_dest = __proto_list [u_class_dest_name];
+  var proto_src = __proto_list [u_class_src_name];
+  var member, prop;
+
+  if (!proto_dest)
+  {
+    printlnConsole ("Class.extend: Unknown class '" + class_dest_name + "'");
+    return;
+  }
+  if (!proto_src)
+  {
+    printlnConsole ("Class.extend: Unknown class '" + class_src_name + "'");
+    return;
+  }
+  __proto_hierarchy  [u_class_dest_name] = u_class_src_name;
+  proto_dest.__proto__ = proto_src;
+//   var u_class_sub_name = __proto_hierarchy [u_class_src_name];
+//   
+//   for (prop in proto_src)
+//   {
+//     member = proto_src [prop];
+//     if (!proto_dest [prop])
+//     {
+//       proto_dest [prop] = member;
+//     }
+//     if (Object.isFunction (member))
+//     {
+//       if (u_class_sub_name && prop.indexOf (u_class_sub_name) == 0)
+//       {
+//         continue;
+//       }
+//       /* manage polymorphisme */
+//       fct_name = u_class_src_name + '_' + prop;
+//       proto_dest [fct_name] = member;
+// //      printlnConsole (class_dest_name + ' __ ' + fct_name);
+//     }
+//   }
+}
+
+function __apply__ (obj, method, args)
+{
+  if (!obj)
+  {
+    printlnConsole (" __apply__ Object null");
+    return;
+  }
+  if (!method || !Object.isFunction (obj [method]))
+  {
+    printlnConsole (" __apply__ unknown method '" + method + "'");
+    return;
+  }
+
+  if (!args || args.length == 0)
+    return obj [method] ();
+  else if (args.length == 1)
+    return obj [method] (args[0]);
+  else if (args.length == 2)
+    return obj [method] (args[0], args[1]);
+  else if (args.length == 3)
+    return obj [method] (args[0], args[1], args[2]);
+  else if (args.length == 4)
+    return obj [method] (args[0], args[1], args[2], args[3]);
+  else if (args.length == 5)
+    return obj [method] (args[0], args[1], args[2], args[3], args[4]);
+  else if (args.length == 6)
+    return obj [method] (args[0], args[1], args[2], args[3], args[4], args[5]);
+  else if (args.length == 7)
+    return obj [method] (args[0], args[1], args[2], args[3], args[4], args[5], args[6]);
+  else
+  {
+    printlnConsole (" __apply__ Too much parameters...");
+  }
+}
+
+function class_apply ()
+{
+  var args = arguments;
+  var class_name = args [0];
+  var method = args [1];
+
+  if (!class_name || !Object.isString (class_name) ||
+      !method || !Object.isString (method))
+  {
+    printlnConsole ("Class.apply : bad parameters.");
+    return;
+  }
+
+  if (args.length > 2)
+  {
+    args = __slice (args, 2);
+  }
+  else
+  {
+    args = null;
+  }
+  var proto_name = class_name.underscore ();
+  var proto = __proto_list [proto_name];
+  if (!proto)
+  {
+    printlnConsole ("Class.apply : unknown prototype for class '" + class_name + "'");
+    return;
+  }
+  
+  while (proto)
+  {
+    if (Object.isFunction (proto [method]))
+    {
+      this.__function_to_call__ = proto [method];
+      var result = __apply__ (this, '__function_to_call__', args);
+      delete this.__function_to_call__;
+      return result;
+    }
+    proto = proto.__proto__;
+  }
+
+  printlnConsole ("Class.super : unknown function '" + method + "'");
+}
+
+function class_new ()
+{
+  var args = arguments;
+  var class_name = args [0];
+  var proto_name = class_name.underscore ();
+  var proto = __proto_list [proto_name];
+  if (!proto)
+  {
+    printlnConsole ("Impossible to instanciate with unknown prototype '" + proto_name + "'");
+    return;
+  }
+  
+  var obj = new Object ();
+  object_extend_with_proto (obj, proto_name);
+  obj.apply = class_apply;
+  obj.__proto__ = proto;
+  
+  if (obj._constructor)
+  {
+    if (args.length == 1)
+      obj._constructor ();
+    else if (args.length == 2)
+      obj._constructor (args[1]);
+    else if (args.length == 3)
+      obj._constructor (args[1], args[2]);
+    else if (args.length == 4)
+      obj._constructor (args[1], args[2], args[3]);
+    else if (args.length == 5)
+      obj._constructor (args[1], args[2], args[3], args[4]);
+    else if (args.length == 6)
+      obj._constructor (args[1], args[2], args[3], args[4], args[5]);
+    else if (args.length == 7)
+      obj._constructor (args[1], args[2], args[3], args[4], args[5], args[6]);
+  }
+  return obj
+}
+
+function class_create (class_name, proto)
+{
+  var proto_name = class_name.underscore ();
+  __proto_list [proto_name] = proto;
+  proto.__name__ = proto_name;
+  
+  return new Object ();
+}
+
+function class_add_method (class_name, method_name, func)
+{
+  var u_class_name = class_name.underscore ();
+  var proto = __proto_list [u_class_name];
+  if (!proto)
+  {
+    printlnConsole ("Impossible to add method to unknown class '" + class_name + "'");
+    return;
+  }
+  proto [method_name] = func;
+}
+
+/** 
+ *  The class namespace.
+ *  @namespace Class
+ *  <br />
+ *  It provides a set of fonctionalities to create, extends and instanciate
+ *  classes.
+ *
+ */ 
+var Class = new Object ();
+
+/** 
+ *  Extend a class with a other.
+ *  <br/>
+ *  You use this method to make hierarchical classes.
+ *
+ *  @example
+ *  // MyClassA definition
+ *  var class_proto_a = new Object ();
+ *  ...
+ *  var MyClassA = Class.create ("MyClassA", class_proto_a);
+ *  // MyClassB definition
+ *  var class_proto_b = new Object ();
+ *  ...
+ *  var MyClassB = Class.create ("MyClassB", class_proto_b);
+ *  // now the MyClassB will extend the class MyClassA
+ *  Class.extend ('MyClassB', 'MyClassA');
+ *
+ *  @name extend
+ *  @function
+ *  @memberOf Class
+ *
+ *  @param {String} nameA the name of the class to extend
+ *  @param {String} nameB the name of the class use for the extension
+ */ 
+Class.extend = class_extend;
+
+/** 
+ *  Create a new class with a given prototype.
+ *  <br/>
+ *  A prototype is a object that contains a set of member and method
+ *  which defines the class interface (API).
+ *
+ *  @example
+ *  var class_proto = new Object ();
+ *  function construtor () { ... }
+ *  function method1 () { ... }
+ *  class_proto._constructor = construtor;
+ *  class_proto.method1 = method1;
+ *  class_proto.member1 = "";
+ *
+ *  var MyClass = Class.create ("MyClass", class_proto);
+ *
+ *  @name create
+ *  @function
+ *  @memberOf Class
+ *
+ *  @param {String} name the name of the class
+ *  @param {Object} prototype the class prototype
+ */ 
+Class.create = class_create;
+
+/** 
+ *  Setter for size. Gives the dimensions of the visual content
+ *
+ *  @name addMethod
+ *  @function
+ *  @memberOf Class
+ *
+ *  @protected.
+ */ 
+Class.addMethod = class_add_method;
+
+/** 
+ *  The new command dynamically allocates javascript object and initialises
+ *  it using the constructor.
+ *
+ *  @name new
+ *  @function
+ *  @memberOf Class
+ *
+ *  @param {String} name the name of the class to allocate
+ *  @param list of parameters of the constructor
+ */ 
+Class["new"] = class_new;
+/**
+  Copyright (C) 2009-2011. ViniSketch SARL (c) All rights reserved
+  
+  THIS SOURCE CODE, ALL THE INTELLECTUAL PROPERTY RIGHTS THAT IT
+  CONTAINS, AND ALL COPYRIGHTS PERTAINING THERETO ARE THE EXCLUSIVE
+  PROPERTY OF VINISKETCH SARL.
+  
+  THIS SOURCE CODE SHALL NOT BE COPIED OR REPRODUCED IN
+  FULL OR IN PART.
+  
+  THE PRESENT COPYRIGHT NOTICE MAY NOT BE CHANGED NOR REMOVED FROM THE
+  PRESENT FILE.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+  OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+  NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+  HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+  OTHER DEALINGS IN THE SOFTWARE.
+*/
+
+/**
+ *  @class
+ *  An ABEvent object, or simply an event, contains information about an input
+ *  action such as a button click or a key down. The ABEvent object contains
+ *  pertinent information about each event, such as where the cursor was located
+ *  or which character was typed.<br>
+ *  When an event is catch by an application component, the callback
+ *  receives as parameters an instance (or sub instance) of this class.
+ *  <p>
+ *  It specifies the source of the event (which object has generated the event),
+ *  the type of the event and an event data.
+ *
+ *  @author David Thevenin
+ *
+ *  @constructor
+ *  Main constructor
+ *
+ *	@param {ABEventSource} src the source of the event [mandatory]
+ *	@param {string} type the event type [mandatory]
+ *	@param {Object} data complemetary event data [optional]
+*/
+function ABEvent (src, type, data)
+{
+/**
+ * The component which produce the event
+ * @type {ABEventSource|HTMLElement}
+ */
+  this.src = src;
+
+/**
+ * The event spec. For instance 'click' for a mouse click event.
+ * @type {String}
+ */
+  this.type = type;
+
+/**
+ * The optional data associate to the event.
+ * @type {Object|null}
+ */
+  this.data = data;
+}/**
+  Copyright (C) 2009-2011. ViniSketch SARL (c) All rights reserved
+  
+  THIS SOURCE CODE, ALL THE INTELLECTUAL PROPERTY RIGHTS THAT IT
+  CONTAINS, AND ALL COPYRIGHTS PERTAINING THERETO ARE THE EXCLUSIVE
+  PROPERTY OF VINISKETCH SARL.
+  
+  THIS SOURCE CODE SHALL NOT BE COPIED OR REPRODUCED IN
+  FULL OR IN PART.
+  
+  THE PRESENT COPYRIGHT NOTICE MAY NOT BE CHANGED NOR REMOVED FROM THE
+  PRESENT FILE.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+  OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+  NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+  HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+  OTHER DEALINGS IN THE SOFTWARE.
+*/
+
+/**
+ * @private
+ */
+var abobject_proto = new Object ();
+
+/**
+ *  @class
+ *  ABObject is the root class of most class hierarchies. Through ABObject,
+ *  objects inherit a basic interface for configuration and clone mechanism.
+ *  It provides an unique identifier for objects.
+ *
+ *  @author David Thevenin
+ *  
+ *  @constructor
+ *  Main constructor
+ *  @name ABObject
+ *	@param {string} id the identifier [mandatory]
+*/
+function abobject_constructor (id)
+{
+  if (!Object.isString (id))
+  {
+    if (id && id.id) { this.id = id.id; }
+  // if no id is specified, create one
+    else { this.id = ABObject.createId (); }
+  }
+  else
+  {
+    this.id = id;
+  }
+  
+  // save the current object
+  ABObject._obs [this.id] = this;
+  this.__i__ = false;
+}
+abobject_proto._constructor = abobject_constructor;
+
+/**
+ * Returns an unique Id <p>
+ * The algorithm is use a time stamp and a random number to generate the id.
+ * @return {String}
+ * @private
+ */
+function _createId ()
+{
+  return "id_" + new Date().getTime() + "" + Math.floor (Math.random() * 1000);
+}
+  
+/**
+ * @private
+ */
+abobject_proto.id = '';
+
+/**
+ * @private
+ */
+abobject_proto.__i__ = false;
+
+/**
+ * Object default init. <p>
+ * Should be overloaded by the object extension class.
+ *
+ * @name init
+ * @function
+ * @memberOf ABObject.prototype
+ *
+ * @example
+ * myObject = new ABObject (ABObject.createID ());
+ * myObject.init ();
+ */
+function abobject_init ()
+{
+  if (this.__i__) { return; }
+  this.initComponent ();
+  
+  this.__i__ = true;
+}
+abobject_proto.init = abobject_init;
+
+/**
+ * @private
+ */
+function abobject_initComponent ()
+{};
+abobject_proto.initComponent = abobject_initComponent;
+  
+/**
+ * Object configuation method. <p>
+ * This is a useful function for configuring an ABObject. It takes as
+ * parameters, an associated array <key, value>. Each object member identical 
+ * to the key are set with the associated value
+ *
+ * @name configure
+ * @function
+ * @memberOf ABObject.prototype
+ *
+ * @param {Object} config the associated array used for configuring the object.
+ */
+function abobject_configure (config)
+{
+  if (typeof (config) != 'object') { return; }
+  
+  for (var key in config)
+  {
+    if (key == 'id' || key == 'node' || key == 'view') 
+    { continue; }
+    if (!key.capitalize) { continue; }
+    var method = "set" + key.capitalize ();
+    if (!this [method]) { continue; }
+    this [method] (config [key]);
+  }
+}
+abobject_proto.configure = abobject_configure;
+  
+/**
+ * @protected
+ */
+function abobject_destructor ()
+{}
+abobject_proto.destructor = abobject_destructor;
+
+var ABObject = Class.create ('ABObject', abobject_proto);
+
+ABObject._obs = new Object ();
+
+/**
+ * Returns an unique Id <p>
+ * The algorithm is use a time stamp and a random number to generate the id.
+ *
+ * @name createId
+ * @function
+ * @memberOf ABObject
+ *
+ * @return {String}
+ */
+ABObject.createId = _createId;/**
+  Copyright (C) 2009-2011. ViniSketch SARL (c) All rights reserved
+  
+  THIS SOURCE CODE, ALL THE INTELLECTUAL PROPERTY RIGHTS THAT IT
+  CONTAINS, AND ALL COPYRIGHTS PERTAINING THERETO ARE THE EXCLUSIVE
+  PROPERTY OF VINISKETCH SARL.
+  
+  THIS SOURCE CODE SHALL NOT BE COPIED OR REPRODUCED IN
+  FULL OR IN PART.
+  
+  THE PRESENT COPYRIGHT NOTICE MAY NOT BE CHANGED NOR REMOVED FROM THE
+  PRESENT FILE.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+  OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+  NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+  HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+  OTHER DEALINGS IN THE SOFTWARE.
+*/
+
+
+/**
+ *  Structure used for managing events
+ *  @private
+ */
+function ABHandler (_spec, _obj, _func)
+{
+  this.spec = _spec;
+  this.obj = _obj;
+  this.func = _func;
+}
+
+/**
+ * @private
+ */
+var abeventsource_proto = new Object ();
+
+/**
+ *  @class
+ *  ABEventSource is an  class that forms the basis of event and command 
+ *  processing. All class that handles events must inherit from ABEventSource.
+ *
+ *  @extends ABObject
+ *  @author David Thevenin
+ *  @name ABEventSource
+ *
+ *  @constructor
+ *  Main constructor
+ *
+ *  @param {string} id the identifier [mandatory]
+*/
+function abeventsource_constructor (_id)
+{
+  if (!Object.isString (_id))
+  {
+    if (_id && _id.id) { _id = _id.id; }
+    else { _id = ABObject.createId (); }
+  }
+
+  this.apply ('ABObject', '_constructor', _id);
+  
+  this.__bindings__ = new Object ();
+  this.__node_binds__ = new Object ();
+}
+abeventsource_proto._constructor = abeventsource_constructor;
+
+/**
+ * @protected
+ */
+abeventsource_proto.__bindings__ = null;
+
+/**
+ * @private
+ */
+abeventsource_proto.__node_binds__ = null;
+
+/***************************************************************
+
+***************************************************************/
+
+/**
+ * @protected
+ */
+function abeventsource_destructor ()
+{
+  var spec, list_bind, i, handler, binds;
+  
+  for (spec in this.__bindings__)
+  {
+    list_bind = this.__bindings__ [spec];
+    if (!list_bind) { continue; }
+    while (list_bind.length)
+    {
+      handler = list_bind.pop ();
+      delete (handler);
+    }
+    delete (this.__bindings__ [spec]);
+  }
+  
+  delete (this.__bindings__);
+  
+  for (spec in this.__node_binds__)
+  {
+    binds = this.__node_binds__ [spec];
+    if (typeof (binds) == "undefined")
+    {
+      printlnConsole
+        ("ABObject.destructor, no bind <" + spec + " exists.");
+      continue;
+    }
+    for (i = 0; i < binds.length; i++)
+    {
+      data = binds [i];
+      data.n.removeEventListener (event, data.h);
+    }
+  }
+  delete (this.__node_binds__);
+  
+  this.apply ('ABObject', 'destructor');
+}
+abeventsource_proto.destructor = abeventsource_destructor;
+
+/**
+ * @protected
+ */
+function abeventsource_bind (spec, obj, func)
+{
+  if (!spec || !obj) { return; }
+  
+  /** @private */
+  var handler = new ABHandler (spec, obj, func),
+    list_bind = this.__bindings__ [spec];
+  if (!list_bind)
+  {
+    list_bind = new Array ();
+    this.__bindings__ [spec] = list_bind; 
+  }
+  list_bind [list_bind.length] = handler;
+  
+  return handler;
+}
+
+/**
+ * @protected
+ */
+function abeventsource_unbind (spec, obj, func)
+{
+  var list_bind = this.__bindings__ [spec], i = 0, bind;
+  if (!list_bind) { return; }
+
+  while (i < list_bind.length)
+  {
+    bind = list_bind [i];
+    if (bind.spec == spec)
+    {
+      if (bind.obj == obj)
+      {
+        if (Object.isString (func) || Object.isFunction (func) )
+        {
+          if (bind.func == func)
+          {
+            list_bind.remove (i);
+            delete (bind);
+          }
+          else { i++; }
+        }
+        else
+        {
+          list_bind.remove (i);
+          delete (bind);
+        }
+      }
+      else { i++; }
+    }
+    else { i++; }
+  }
+}
+
+/**
+ *  The event bind method to listen events
+ *  <p>
+ *  When you want listen an event generated by this object, you can
+ *  bind your object (the observer) to this object using 'bind' method.
+ *  <p>
+ *  Warning:<br>
+ *
+ * @name bind
+ * @function
+ * @memberOf ABEventSource.prototype
+ *
+ * @param {string} spec the event specification [mandatory]
+ * @param {ABObject} obj the object interested to catch the event [mandatory]
+ * @param {string} func the name of a callback. If its not defined
+ *        notify method will be called [optional]
+ *        an other "simili thread". 
+ */
+abeventsource_proto.bind = abeventsource_bind;
+
+/**
+ *  The event unbind method
+ *  <p>
+ *  Should be call when you want stop event listening on this object
+ *
+ * @name unbind
+ * @function
+ * @memberOf ABEventSource.prototype
+ *
+ * @param {string} spec the event specification [mandatory]
+ * @param {ABObject} obj the object you want unbind [mandatory]
+ * @param {string} func the name of a callback. If its not defined
+ *        all binding with <spec, obj> will be removed
+ */
+abeventsource_proto.unbind = abeventsource_unbind;
+
+/**
+ *  Propagate an event
+ *  <p>
+ *  All Object listening this ABEventSource will receive this new handled
+ *  event.
+ *
+ * @name propagate
+ * @function
+ * @memberOf ABEventSource.prototype
+ *
+ * @param {String} spec the event specification [mandatory]
+ * @param {Object} data an optional data event [optional]
+ * @param {ABObject} srcTarget a event source, By default this object is
+ *        the event source [mandatory]
+ */
+function abeventsource_propagate (type, data, srcTarget)
+{
+  var list_bind = this.__bindings__ [type], event, i, handler, func;
+  if (!list_bind)
+  {
+    if (this.__parent)
+    {
+      if (!srcTarget) { srcTarget = this; }
+      this.__parent.propagate (type, data, srcTarget);
+    }
+    return;
+  }
+  event = new ABEvent (this, type, data);
+  if (srcTarget) { event.srcTarget = srcTarget; }
+  
+  i = list_bind.length;
+
+  while (i--)
+  {
+    /** @private */
+    handler = list_bind [i];    
+    
+    if (handler.func)
+    {
+      if (!handler.obj[handler.func])
+      {
+        printlnDebug ("Unknown method '" + handler.func +
+         "' in class propotype '" + handler.obj.__name__ +  "'");
+        return
+      }
+      handler.obj[handler.func] (event); // specific notify method
+    }
+    else
+    {
+      handler.obj.notify (event); // default notify method
+    }
+  }
+}
+abeventsource_proto.propagate = abeventsource_propagate;
+
+/**
+ * Propagate an data change event
+ *
+ * @name propagateChanges
+ * @function
+ * @memberOf ABEventSource.prototype
+ * @private
+ *
+ * who will not receive the event
+ */
+function abeventsource_propagateChanges (who, info, data) 
+{
+  var type = "data_changed",
+    list_bind = this.__bindings__ [type], event, i, handler, func;
+    
+  if (!list_bind) { return; }
+  
+  var e_data = new Object ();
+  e_data.info = info;
+  e_data.data = data;
+  
+  event = new ABEvent (this, type, e_data);
+  
+  i = list_bind.length;
+
+  while (i--)
+  {
+    /** @private */
+    handler = list_bind [i];
+    if (handler.obj == who) { continue; }
+
+    if (handler.func)
+    {
+      if (!handler.obj[handler.func])
+      {
+        printlnDebug ("Unknown method '" + handler.func +
+         "' in class propotype '" + handler.obj.__name__ +  "'");
+        return
+      }
+      handler.obj[handler.func] (event); // specific notify method
+    }
+    else
+    {
+      handler.obj.notify (event); // default notify method
+    }
+  }
+  delete (event);
+} 
+abeventsource_proto.propagateChanges = abeventsource_propagateChanges;
+
+/**
+ * if this object receive an event it repropagates it if nobody has 
+ * overcharged the notify method.
+ *
+ * @name notify
+ * @function
+ * @memberOf ABEventSource.prototype
+ *
+ * @public
+ */
+function abeventsource_notify (event)
+{
+  this.propagate (event.type, event.data);
+}
+abeventsource_proto.notify = abeventsource_notify;
+
+var ABEventSource = Class.create ('ABEventSource', abeventsource_proto);
+Class.extend ('ABEventSource', 'ABObject');
+/**
+  Copyright (C) 2009-2011. ViniSketch SARL (c) All rights reserved
+  
+  THIS SOURCE CODE, ALL THE INTELLECTUAL PROPERTY RIGHTS THAT IT
+  CONTAINS, AND ALL COPYRIGHTS PERTAINING THERETO ARE THE EXCLUSIVE
+  PROPERTY OF VINISKETCH SARL.
+  
+  THIS SOURCE CODE SHALL NOT BE COPIED OR REPRODUCED IN
+  FULL OR IN PART.
+    
+  THE PRESENT COPYRIGHT NOTICE MAY NOT BE CHANGED NOR REMOVED FROM THE
+  PRESENT FILE.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+  OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+  NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+  HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+  WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+  OTHER DEALINGS IN THE SOFTWARE.
+*/
+
+/**
+ *  The KEYBOARD Object
+ * <p>
+ * <p>
+ *  List of predefined event spec:<br>
+ *  General events:
+ *  <ul>
+ *  <li> KEYBOARD.KEY_UP
+ *  <li> KEYBOARD.ENTER
+ *  <li> KEYBOARD.RED
+ *  <li> KEYBOARD.BLUE
+ *  <li> KEYBOARD.GREEN
+ *  <li> KEYBOARD.YELLOW
+ *  <li> KEYBOARD.BACK
+ *  <li> KEYBOARD.ENTER
+ * </ul>Directional pad events:<ul>
+ *  <li> KEYBOARD.LEFT_ARROW 
+ *  <li> KEYBOARD.UP_ARROW 
+ *  <li> KEYBOARD.RIGHT_ARROW
+ *  <li> KEYBOARD.DOWN_ARROW 
+ * </ul>Digital keyboard events:<ul>
+ *  <li> KEYBOARD.ZERO
+ *  <li> KEYBOARD.ONE
+ *  <li> KEYBOARD.TWO
+ *  <li> KEYBOARD.THREE
+ *  <li> KEYBOARD.FOUR
+ *  <li> KEYBOARD.FIVE
+ *  <li> KEYBOARD.SIX
+ *  <li> KEYBOARD.SEVEN
+ *  <li> KEYBOARD.EIGHT
+ *  <li> KEYBOARD.NINE
+ * </ul>
+ *  @type {ABEventSource}
+ *  @const
+ */
+var KEYBOARD = Class["new"] ('ABEventSource', '__KEYBOARD__');
+
+/*KEYBOARD._handler_set_down = false;
+KEYBOARD._handler_set_up = false;*/
+
+function __keyup_handler (event)
+{
+  if (!event) 
+  { event = document.currentEvent; }
+  KEYBOARD.propagate (event.keyCode + KEYBOARD.KEY_UP, event);
+}
+      
+function __keydown_handler (event)
+{
+  if (!event) 
+  { event = document.currentEvent; }
+  
+  KEYBOARD.propagate (event.keyCode, event);
+}
+
+function __init_keyboard_handler ()
+{
+  var p = document.getElementById ('keyboard_event');
+  if (p)
+  { p.focus (); }
+}
+      
+function KEYBOARD_bind (keyCode, obj, func, prevent)
+{
+  var handler = this.abeventsource_bind (keyCode, obj, func),
+    self = this;
+  /*
+  if (keyCode > KEYBOARD.KEY_UP)
+  {
+    if (!this._handler_set_up)
+    {
+      document.onkeyup = __keyup_handler;
+      this._handler_set_up = true;
+    }
+  }
+  else
+  {
+    if (!this._handler_set_down)
+    {
+      document.onkeydown = __keydown_handler;
+      this._handler_set_down = true;
+    }
+  }
+  */
+};
+KEYBOARD.abeventsource_bind = KEYBOARD.bind;
+KEYBOARD.bind = KEYBOARD_bind;
+
+KEYBOARD.KEY_UP = 1000; 
+KEYBOARD.ENTER = 18;
+KEYBOARD.DBUTTON = 20;
+KEYBOARD.RED = 22;
+KEYBOARD.BLUE = 21;
+KEYBOARD.GREEN = 23;
+KEYBOARD.YELLOW = 24;
+KEYBOARD.BACK = 19;
+
+KEYBOARD.UP_ARROW = 1;
+KEYBOARD.DOWN_ARROW = 2;
+KEYBOARD.LEFT_ARROW = 3;
+KEYBOARD.RIGHT_ARROW = 4;
+
+
+KEYBOARD.ZERO = 5;
+KEYBOARD.ONE = 6;
+KEYBOARD.TWO = 7;
+KEYBOARD.THREE = 8;
+KEYBOARD.FOUR = 9;
+KEYBOARD.FIVE = 10;
+KEYBOARD.SIX = 11;
+KEYBOARD.SEVEN = 12;
+KEYBOARD.EIGHT = 13;
+KEYBOARD.NINE = 14;
+KEYBOARD.TEN = 15;
+KEYBOARD.ELEVEN = 16;
+KEYBOARD.TWELVE = 14;
+
+
